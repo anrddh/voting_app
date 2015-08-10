@@ -1,0 +1,22 @@
+{
+  "name": "voting_app",
+  "version": "0.0.1",
+  "description": "An application that allows the user to create and vote on polls.",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/awesomeaniruddh/voting_app.git"
+  },
+  "author": "Aniruddh Agarwal",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/awesomeaniruddh/voting_app/issues"
+  },
+  "homepage": "https://github.com/awesomeaniruddh/voting_app#readme",
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "express": "^4.13.3",
+    "method-override": "^2.3.5",
+    "mongoose": "^4.1.1"
+  }
+}
