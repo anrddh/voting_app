@@ -5,8 +5,43 @@ module.exports = function(app) {
     app.get('/api/polls', function(req, res) {
         Polls.find(function(err, polls) {
             if(err) res.send(err);
-
             res.json(polls);
+        });
+    });
+
+    app.get('/api/polls/:poll_id', function(req, res) {
+        Polls.findById(req.params.poll_id ,function(err, poll) {
+            if(err) res.send(err);
+            res.json(poll);
+        });
+    });
+
+    app.get('/api/polls/options/:poll_id', function(req, res) {
+        Options.find({poll_id:req.params.poll_id}, function(err, options) {
+            if(err) res.send(err);
+            res.json(options);
+        });
+    });
+
+    app.post('/api/polls', function(req, res) {
+        Polls.create({
+            name: req.body.text
+        }, function(err, poll) {
+            if(err) res.send(err);
+            Polls.find(function(err, poll) {
+                if(err) res.send(err);
+                res.json(poll);
+            });
+        });
+    });
+
+    app.post('/api/polls/options/', function(req, res) {
+        Options.create({
+            poll_id: req.body.id,
+            option: req.body.text,
+            votes: req.body.opt
+        }, function(err, option) {
+            if(err) res.send(err);
         });
     });
 
