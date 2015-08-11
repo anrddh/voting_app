@@ -1,0 +1,1 @@
+var Polls = angular.module('');
