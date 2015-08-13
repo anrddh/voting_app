@@ -39,9 +39,13 @@ module.exports = function(app) {
         Options.create({
             poll_id: req.body.id,
             option: req.body.text,
-            votes: req.body.opt
+            votes: req.body.votes
         }, function(err, option) {
             if(err) res.send(err);
+            Options.find(function(err, option) {
+                if(err) res.send(err);
+                res.json(option[option.length-1]);
+            });
         });
     });
 
