@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var pollsSchema = new Schema({
-    name: { type: String, required: true, unique: true},
+    name: { type: String, required: true},
 });
 
 var optionsSchema = new Schema({
