@@ -1,0 +1,15 @@
+<form ng-submit="processForm()">
+    <div class="form-group">
+        <label for="pollTitle">Poll Title</label>
+        <input type="text" class="form-control" id="pollTitle" placeholder="Do you prefer Coke or Pepsi?" ng-model="formTitle.title" required>
+    </div>
+    <div class="form-group">
+        <label for="inputPassword">Options</label>
+        <div ng-repeat="option in options">    
+            <input type="text" class="form-control" placeholder="{{option.fname}}" ng-model="option.text" required>
+        </div>
+    </div>
+    <button type="button" class="btn btn-info" ng-click="addOption()">Add another option</button>
+    <button type="button" class="btn btn-info" ng-click="remOption()">Remove an option</button>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>

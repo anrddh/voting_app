@@ -25,12 +25,12 @@ module.exports = function(app) {
 
     app.post('/api/polls', function(req, res) {
         Polls.create({
-            name: req.body.text
+            name: req.body.title
         }, function(err, poll) {
             if(err) res.send(err);
             Polls.find(function(err, poll) {
                 if(err) res.send(err);
-                res.json(poll);
+                res.json(poll[poll.length-1]);
             });
         });
     });
