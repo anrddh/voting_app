@@ -9,13 +9,6 @@ module.exports = function(app) {
         });
     });
 
-    app.get('/api/polls/:poll_id', function(req, res) {
-        Polls.findById(req.params.poll_id ,function(err, poll) {
-            if(err) res.send(err);
-            res.json(poll);
-        });
-    });
-
     app.get('/api/polls/options/:poll_id', function(req, res) {
         Options.find({poll_id:req.params.poll_id}, function(err, options) {
             if(err) res.send(err);
@@ -45,6 +38,18 @@ module.exports = function(app) {
             Options.find(function(err, option) {
                 if(err) res.send(err);
                 res.json(option[option.length-1]);
+            });
+        });
+    });
+
+    app.post('/api/polls/options/upVote', function(req, res) {
+        Options.findById(req.body["_id"], function(err, option) {
+            if(err) res.send(err);
+            option.votes = req.body.votes;
+            option.save(function(err) {
+                if(err) res.send(err);
+
+                res.json({message: "Success!"});
             });
         });
     });
