@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+var Schema   = mongoose.Schema;
 
 var pollsSchema = new Schema({
     name: { type: String, required: true},
+    author: { type: String, required: true}
 });
 
 var optionsSchema = new Schema({

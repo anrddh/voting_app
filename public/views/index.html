@@ -13,11 +13,10 @@
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular-route.js"></script>
         <script src="./js/app.js"></script>
-        <script src="./js/controllers/loginController.js"></script>
         <script src="./js/controllers/mainController.js"></script>
         <script src="./js/controllers/pollController.js"></script>
         <script src="./js/controllers/pollNewController.js"></script>
-        <script src="./js/controllers/regController.js"></script>
+        <script src="./js/controllers/authController.js"></script>
     </head>
     <body ng-controller="mainController">
         <header>
@@ -36,10 +35,13 @@
                         <ul class="nav navbar-nav">
                             <li class="active"><a href="index.html">Home</a></li>
                             <li><a href="#/polls">Polls</a></li>
+                            <li ng-show="isLoggedIn()"><a href="#/polls/new">New Poll</a></li>
                         </ul>
                         <ul class="nav navbar-nav navbar-right">
-                            <li><a href="#/login">Login</a></li>
-                            <li><a href="#/register">Sign Up</a></li>
+                            <li ng-show="isLoggedIn()"><a>{{ currentUser() }}</a></li>
+                            <li ng-show="isLoggedIn()"><a href="" ng-click="logOut()">Log out</a></li>
+                            <li ng-hide="isLoggedIn()"><a href="#/login">Login</a></li>
+                            <li ng-hide="isLoggedIn()"><a href="#/register">Sign Up</a></li>
                         </ul>
                     </div>
                 </div>

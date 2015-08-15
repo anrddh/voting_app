@@ -1,5 +1,9 @@
-var Polls = require('./models/polls.js').polls;
-var Options = require('./models/polls.js').options;
+var Polls    = require('./models/polls.js').polls;
+var Options  = require('./models/polls.js').options;
+var User     = require('./models/user.js').user;
+var passport = require('passport');
+var jwt      = require('express-jwt');
+var auth     = jwt({secret: 'SECRET', userProperty: 'payload'});
 
 module.exports = function(app) {
     app.get('/api/polls', function(req, res) {
@@ -16,9 +20,10 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/api/polls', function(req, res) {
+    app.post('/api/polls', auth, function(req, res) {
         Polls.create({
-            name: req.body.title
+            name: req.body.title,
+            author: req.body.author
         }, function(err, poll) {
             if(err) res.send(err);
             Polls.find(function(err, poll) {
@@ -28,7 +33,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/api/polls/options/', function(req, res) {
+    app.post('/api/polls/options/', auth, function(req, res) {
         Options.create({
             poll_id: req.body.id,
             option: req.body.text,
@@ -52,6 +57,30 @@ module.exports = function(app) {
                 res.json({message: "Success!"});
             });
         });
+    });
+
+    app.post('/register', function(req, res, next) {
+        var user = new User();
+        user.username = req.body.username;
+        user.setPassword(req.body.password);
+
+        user.save(function(err) {
+            if(err) return next(err);
+
+            return res.json({token: user.generateJWT()});
+        });
+    });
+
+    app.post('/login', function(req, res, next) {
+        passport.authenticate('local', function(err, user, info){
+            if(err){ return next(err); }
+
+            if(user){
+                return res.json({token: user.generateJWT()});
+            } else {
+                return res.status(401).json(info);
+            }
+        })(req, res, next);
     });
 
     app.get('*', function(req, res) {
