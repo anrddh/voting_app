@@ -1,6 +1,6 @@
 var Polls = angular.module('Polls', ['ngRoute']);
 
-Polls.factory('auth', ['$http', '$window', function($http, $window) {
+Polls.factory('auth', ['$http', '$window', '$location', function($http, $window, $location) {
 	var auth = {};
 
 	auth.saveToken = function(token) {
@@ -45,6 +45,7 @@ Polls.factory('auth', ['$http', '$window', function($http, $window) {
 
 	auth.logOut = function() {
 		$window.localStorage.removeItem('tok');
+		$location.path('/');
 	};
 
 	return auth;

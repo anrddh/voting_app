@@ -13,6 +13,14 @@ module.exports = function(app) {
         });
     });
 
+    app.get('/api/polls/:author', function(req, res) {
+        Polls.find({author: req.params.author}, function(err, polls) {
+            if(err) res.send(err);
+            res.json(polls);
+        });
+    });
+
+
     app.get('/api/polls/options/:poll_id', function(req, res) {
         Options.find({poll_id:req.params.poll_id}, function(err, options) {
             if(err) res.send(err);
@@ -81,6 +89,25 @@ module.exports = function(app) {
                 return res.status(401).json(info);
             }
         })(req, res, next);
+    });
+
+    app.delete('/api/polls/delete/:poll_id', auth, function(req, res, next) {
+        Polls.remove({
+            _id: req.params.poll_id
+        }, function(err, poll) {
+            if(err) res.send(err);
+
+            Options.remove({
+                poll_id: req.params.poll_id
+            }, function(err, option) {
+                if(err) res.send(err);
+            });
+
+            Polls.find(function(err, polls) {
+                if(err) res.send(err);
+                res.json(polls);
+            });
+        });
     });
 
     app.get('*', function(req, res) {

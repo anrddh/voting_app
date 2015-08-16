@@ -4,7 +4,7 @@ var crypto   = require('crypto');
 var jwt      = require('jsonwebtoken');
 
 var userSchema = new Schema({
-    username: { type: String, lowercase: true, unique: true},
+    username: { type: String, lowercase: true},
     hash: String,
     salt: String
 });

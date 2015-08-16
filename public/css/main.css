@@ -20,3 +20,7 @@ h3, p {
 .glyphicon {
 	margin-right: 10px;
 }
+
+a.left {
+    text-align: left;
+}
