@@ -1,6 +1,7 @@
 <div ng-show="isLoggedIn()"><h1>My Polls</h1>
 <section ng-repeat="poll in polls">
     <h3>{{ poll.name }}</h3>
-    <article ng-repeat="opt in poll.options[0]"><p><a href ng-click="thumbsUp(opt)"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></a>{{ opt.option }} - {{ opt.votes }} votes</p></article>
-    <p><a ng-click="delete()" class="left">Delete</a></p>
+    <canvas id="doughnut" class="chart chart-doughnut" data="poll.data" labels="poll.labels"></canvas>
+    <article ng-repeat="opt in poll.options[0]"><p><a href ng-click="thumbsUp(opt, poll)"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></a>{{ opt.option }} - {{ opt.votes }} votes</p></article>
+    <p><a ng-click="delete(poll)" class="left">Delete</a></p>
 </section></div>

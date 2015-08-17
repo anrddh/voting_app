@@ -7,15 +7,38 @@ Polls.controller("mainController", function($scope, $http, auth, $location) {
         $location.path('/polls');
     }
 
+    $scope.thumbsUp = function(opt, poll) {
+        console.log(opt["_id"]);
+        opt.votes += 1;
+        poll.data[poll.options[0].indexOf(opt)] += 1;
+        console.log(opt);
+        $http.post('/api/polls/options/upVote', opt)
+            .success(function(data) {
+                console.log(data);
+            })
+            .error(function(data) {
+                console.log("Error: " + data);
+            });
+    }
+
     var get_opts= function(i) {
         $http.get('/api/polls/options/' + $scope.polls[i]["_id"])
             .success(function(data_o) {
                 $scope.polls[i].options.push(data_o);
+                var opt_arr = [];
+                var opt_vot_arr = [];
+                for(x=0; x<data_o.length;x++) {
+                    opt_arr.push(data_o[x].option);
+                    opt_vot_arr.push(data_o[x].votes);
+                }
+                $scope.polls[i].data = opt_vot_arr;
+                $scope.polls[i].labels = opt_arr;
+                console.log($scope.polls[i]);
             })
             .error(function(data_o) {
                 console.log('Error: ' + data_O);
             });
-    };
+    }
 
     $http.get('/api/polls/' + $scope.currentUser())
         .success(function(data) {
@@ -28,4 +51,16 @@ Polls.controller("mainController", function($scope, $http, auth, $location) {
         .error(function(data) {
             console.log('Error: ' + data);
         });
+
+    $scope.delete = function(poll) {
+        $http.delete('/api/polls/delete/' + poll["_id"], {headers: {Authorization: 'Bearer '+auth.getToken()}})
+                .success(function(data) {
+                        $scope.polls = data;
+                        console.log(data);
+                })
+                .error(function(data) {
+                    console.log("Error: "+data);
+                });
+        console.log(poll);
+    };
 });

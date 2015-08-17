@@ -3,6 +3,15 @@ Polls.controller("pollController", function($scope, $http, auth) {
 		$http.get('/api/polls/options/' + $scope.polls[i]["_id"])
 			.success(function(data_o) {
 				$scope.polls[i].options.push(data_o);
+				var opt_arr = [];
+				var opt_vot_arr = [];
+				for(x=0; x<data_o.length;x++) {
+					opt_arr.push(data_o[x].option);
+					opt_vot_arr.push(data_o[x].votes);
+				}
+				$scope.polls[i].data = opt_vot_arr;
+				$scope.polls[i].labels = opt_arr;
+				console.log($scope.polls[i]);
 			})
 			.error(function(data_o) {
 				console.log('Error: ' + data_O);
@@ -38,9 +47,10 @@ Polls.controller("pollController", function($scope, $http, auth) {
 			console.log('Error: ' + data);
 		})
 
-	$scope.thumbsUp = function(opt) {
+	$scope.thumbsUp = function(opt, poll) {
 		console.log(opt["_id"]);
 		opt.votes += 1;
+		poll.data[poll.options[0].indexOf(opt)] += 1;
 		console.log(opt);
 		$http.post('/api/polls/options/upVote', opt)
 			.success(function(data) {

@@ -1,4 +1,4 @@
-var Polls = angular.module('Polls', ['ngRoute']);
+var Polls = angular.module('Polls', ['ngRoute', 'chart.js']);
 
 Polls.factory('auth', ['$http', '$window', '$location', function($http, $window, $location) {
 	var auth = {};
