@@ -1,4 +1,4 @@
-Polls.controller("pollController", function($scope, $http, auth) {
+Polls.controller("pollController", function($scope, $http, auth, $route) {
 	var get_opts= function(i) {
 		$http.get('/api/polls/options/' + $scope.polls[i]["_id"])
 			.success(function(data_o) {
@@ -11,7 +11,6 @@ Polls.controller("pollController", function($scope, $http, auth) {
 				}
 				$scope.polls[i].data = opt_vot_arr;
 				$scope.polls[i].labels = opt_arr;
-				console.log($scope.polls[i]);
 			})
 			.error(function(data_o) {
 				console.log('Error: ' + data_O);
@@ -20,14 +19,12 @@ Polls.controller("pollController", function($scope, $http, auth) {
 
 	$scope.delete = function(poll) {
 		$http.delete('/api/polls/delete/' + poll["_id"], {headers: {Authorization: 'Bearer '+auth.getToken()}})
-				.success(function(data) {
-						$scope.polls = data;
-						console.log(data);
+				.success(function() {
+					$scope.polls.splice($scope.polls.indexOf(poll),1);
 				})
 				.error(function(data) {
 					console.log("Error: "+data);
 				});
-		console.log(poll);
 	};
 
 	$http.get('/api/polls')
@@ -41,21 +38,15 @@ Polls.controller("pollController", function($scope, $http, auth) {
 				$scope.polls[i].options = [];
 				get_opts(i);
 			}
-			console.log($scope.polls);
 		})
 		.error(function(data) {
 			console.log('Error: ' + data);
 		})
 
 	$scope.thumbsUp = function(opt, poll) {
-		console.log(opt["_id"]);
 		opt.votes += 1;
 		poll.data[poll.options[0].indexOf(opt)] += 1;
-		console.log(opt);
 		$http.post('/api/polls/options/upVote', opt)
-			.success(function(data) {
-				console.log(data);
-			})
 			.error(function(data) {
 				console.log("Error: " + data);
 			});

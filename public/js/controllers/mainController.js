@@ -13,9 +13,6 @@ Polls.controller("mainController", function($scope, $http, auth, $location) {
         poll.data[poll.options[0].indexOf(opt)] += 1;
         console.log(opt);
         $http.post('/api/polls/options/upVote', opt)
-            .success(function(data) {
-                console.log(data);
-            })
             .error(function(data) {
                 console.log("Error: " + data);
             });
@@ -33,7 +30,6 @@ Polls.controller("mainController", function($scope, $http, auth, $location) {
                 }
                 $scope.polls[i].data = opt_vot_arr;
                 $scope.polls[i].labels = opt_arr;
-                console.log($scope.polls[i]);
             })
             .error(function(data_o) {
                 console.log('Error: ' + data_O);
@@ -54,13 +50,11 @@ Polls.controller("mainController", function($scope, $http, auth, $location) {
 
     $scope.delete = function(poll) {
         $http.delete('/api/polls/delete/' + poll["_id"], {headers: {Authorization: 'Bearer '+auth.getToken()}})
-                .success(function(data) {
-                        $scope.polls = data;
-                        console.log(data);
+                .success(function() {
+                    $scope.polls.splice($scope.polls.indexOf(poll),1);
                 })
                 .error(function(data) {
                     console.log("Error: "+data);
                 });
-        console.log(poll);
     };
 });

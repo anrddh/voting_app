@@ -29,7 +29,6 @@ Polls.controller("pollNewController", function($scope, $http, auth, $location) {
 					$http.post("/api/polls/options", $scope.options[i], {headers:{Authorization: 'Bearer '+auth.getToken()}})
 						.success(function(data_o) {
 							$scope.options = [{fname: "Coke", text: "", votes:0}, {fname: "Pepsi", text: "", votes:0}];
-							console.log(data_o);
 						})
 						.error(function(data_o) {
 							console.log("Error: " + data_o);

@@ -34,12 +34,14 @@ Polls.factory('auth', ['$http', '$window', '$location', function($http, $window,
 	auth.register = function(user) {
 		return $http.post('/register', user).success(function(data) {
 			auth.saveToken(data.token);
+			$location.path('/');
 		});
 	};
 
 	auth.logIn = function(user) {
 		return $http.post('/login', user).success(function(data) {
 			auth.saveToken(data.token);
+	       $location.path('/');
 		});
 	};
 

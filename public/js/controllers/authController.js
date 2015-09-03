@@ -10,13 +10,11 @@ Polls.controller("authController", ['$scope', 'auth', '$location', function($sco
         auth.register($scope.user).error(function(err) {
             $scope.error = err;
         });
-        $location.path('/');
     };
 
     $scope.logIn = function() {
         auth.logIn($scope.user).error(function(err) {
             $scope.error = err;
         });
-        $location.path('/');
     };
 }]);
