@@ -1,4 +1,40 @@
-Polls.controller("pollController", function($scope, $http, auth, $route) {
+Polls.controller("pollController", function($scope, $routeParams, $http, auth, $route) {
+	if($routeParams.id) {
+		$scope.poll_id = $routeParams.id;
+		$http.get('/api/poll/'+$routeParams.id)
+		.success(function(data) {
+			$scope.polls = [data];
+			for(i = 0; i < $scope.polls.length; i++) {
+				$scope.polls[i].del = false;
+				if($scope.polls[i].author === auth.currentUser()) {
+					$scope.polls[i].del = true;
+				}
+				$scope.polls[i].options = [];
+				get_opts(i);
+			}
+		})
+		.error(function(data) {
+			console.log('Error: ' + data);
+		})
+	} else {
+		console.log("yo");
+		$http.get('/api/polls')
+		.success(function(data) {
+			$scope.polls = data;
+			for(i = 0; i < $scope.polls.length; i++) {
+				$scope.polls[i].del = false;
+				if($scope.polls[i].author === auth.currentUser()) {
+					$scope.polls[i].del = true;
+				}
+				$scope.polls[i].options = [];
+				get_opts(i);
+			}
+		})
+		.error(function(data) {
+			console.log('Error: ' + data);
+		})
+	}
+
 	var get_opts= function(i) {
 		$http.get('/api/polls/options/' + $scope.polls[i]["_id"])
 			.success(function(data_o) {
@@ -26,22 +62,6 @@ Polls.controller("pollController", function($scope, $http, auth, $route) {
 					console.log("Error: "+data);
 				});
 	};
-
-	$http.get('/api/polls')
-		.success(function(data) {
-			$scope.polls = data;
-			for(i = 0; i < $scope.polls.length; i++) {
-				$scope.polls[i].del = false;
-				if($scope.polls[i].author === auth.currentUser()) {
-					$scope.polls[i].del = true;
-				}
-				$scope.polls[i].options = [];
-				get_opts(i);
-			}
-		})
-		.error(function(data) {
-			console.log('Error: ' + data);
-		})
 
 	$scope.thumbsUp = function(opt, poll) {
 		opt.votes += 1;

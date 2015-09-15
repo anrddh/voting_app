@@ -13,6 +13,13 @@ module.exports = function(app) {
         });
     });
 
+    app.get('/api/poll/:id', function(req, res) {
+        Polls.findById(req.params.id, function(err, polls) {
+            if(err) res.send(err);
+            res.json(polls);
+        });
+    });
+
     app.get('/api/polls/:author', function(req, res) {
         Polls.find({author: req.params.author}, function(err, polls) {
             if(err) res.send(err);

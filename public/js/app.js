@@ -75,6 +75,11 @@ Polls.config(function($routeProvider) {
 			controller: 'pollController'
 		})
 
+		.when('/polls/:id', {
+			templateUrl: '../views/polls.html',
+			controller: 'pollController'
+		})
+
 		.when('/polls/new', {
 			templateUrl: '../views/pollsNew.html',
 			controller: 'pollNewController'
